@@ -53,13 +53,16 @@ export async function Header() {
         </div>
       </div>
       <div className="flex items-center justify-end space-x-2">
-        <div
+        <button
           className={cn(buttonVariants())}
+          onClick={() => {
+            // Add your file upload logic here
+          }}
         >
           <IconVercel className="mr-2" />
           <span className="hidden sm:block">Upload Documents</span>
           <span className="sm:hidden">Upload</span>
-        </div>
+        </button>
       </div>
     </header>
   )
