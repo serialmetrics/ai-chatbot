@@ -68,8 +68,8 @@ export async function Header() {
           className={cn(buttonVariants())}
         >
           <IconVercel className="mr-2" />
-          <span className="hidden sm:block">Deploy to Vercel</span>
-          <span className="sm:hidden">Deploy</span>
+          <span className="hidden sm:block">Upload Documents</span>
+          <span className="sm:hidden">Upload</span>
         </a>
       </div>
     </header>
