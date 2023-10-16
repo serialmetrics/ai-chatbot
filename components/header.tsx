@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 import { cn } from '@/lib/utils'
@@ -20,22 +19,8 @@ import { ClearHistory } from '@/components/clear-history'
 import { UserMenu } from '@/components/user-menu'
 import { LoginButton } from '@/components/login-button'
 
-export function Header() {
-  const [session, setSession] = useState(null);
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      const result = await auth();
-      setSession(result);
-    };
-
-    fetchSession();
-  }, []);
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    // Handle the file upload here
-  }
+export async function Header() {
+  const session = await auth()
 
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between w-full h-16 px-4 border-b shrink-0 bg-gradient-to-b from-background/10 via-background/50 to-background/80 backdrop-blur-xl">
