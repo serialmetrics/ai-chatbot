@@ -52,8 +52,14 @@ export async function Header() {
           )}
         </div>
       </div>
+      const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        // Handle the file upload here
+      }
+
       <div className="flex items-center justify-end space-x-2">
-        <button className={cn(buttonVariants())}>
+        <input type="file" id="fileUpload" onChange={handleFileChange} style={{display: 'none'}} />
+        <button className={cn(buttonVariants())} onClick={() => document.getElementById('fileUpload').click()}>
           <IconVercel className="mr-2" />
           <span className="hidden sm:block">Upload Documents</span>
           <span className="sm:hidden">Upload</span>
