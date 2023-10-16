@@ -53,15 +53,13 @@ export async function Header() {
         </div>
       </div>
       <div className="flex items-center justify-end space-x-2">
-        <input
-          type="file"
+        <div
           className={cn(buttonVariants())}
-          onChange={(event) => {
-            const file = event.target.files[0];
-            console.log(file);
-            // TODO: Handle the file upload
-          }}
-        />
+        >
+          <IconVercel className="mr-2" />
+          <span className="hidden sm:block">Upload Documents</span>
+          <span className="sm:hidden">Upload</span>
+        </div>
       </div>
     </header>
   )
