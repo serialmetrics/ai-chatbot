@@ -21,6 +21,12 @@ import { LoginButton } from '@/components/login-button'
 
 export async function Header() {
   const session = await auth()
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    // Handle the file upload here
+  }
+
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between w-full h-16 px-4 border-b shrink-0 bg-gradient-to-b from-background/10 via-background/50 to-background/80 backdrop-blur-xl">
       <div className="flex items-center">
@@ -52,10 +58,6 @@ export async function Header() {
           )}
         </div>
       </div>
-      const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        // Handle the file upload here
-      }
 
       <div className="flex items-center justify-end space-x-2">
         <input type="file" id="fileUpload" onChange={handleFileChange} style={{display: 'none'}} />
