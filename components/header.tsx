@@ -53,15 +53,13 @@ export async function Header() {
         </div>
       </div>
       <div className="flex items-center justify-end space-x-2">
-        <a
-          href="https://github.com/vercel/nextjs-ai-chatbot/"
-          target="_blank"
+        <div
           className={cn(buttonVariants())}
         >
           <IconVercel className="mr-2" />
           <span className="hidden sm:block">Upload Documents</span>
           <span className="sm:hidden">Upload</span>
-        </a>
+        </div>
       </div>
     </header>
   )
