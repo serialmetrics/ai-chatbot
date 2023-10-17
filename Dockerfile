@@ -34,6 +34,9 @@ RUN yarn build
 
 # Production image, copy all the files and run next
 FROM base AS runner
+
+ARG port
+
 WORKDIR /app
 
 ENV NODE_ENV production
@@ -56,9 +59,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
-EXPOSE 3000
+EXPOSE ${port}
 
-ENV PORT 3000
+ENV PORT ${port}
 # set hostname to localhost
 ENV HOSTNAME "0.0.0.0"
 
