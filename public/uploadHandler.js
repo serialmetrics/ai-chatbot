@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData();
         formData.append('file', file);
   
-        fetch('http://3.134.106.86:3000/uploads', {
+        fetch('http://3.134.106.86:3000/upload', {
           method: 'POST',
           body: formData,
         })
