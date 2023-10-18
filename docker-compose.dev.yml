@@ -1,0 +1,20 @@
+services:
+  chat:
+    build: .
+    container_name: chatbot
+    env_file:
+      - .env
+    volumes:
+      - ./upload:/app/upload
+    depends_on:
+      - redis
+
+  redis:
+    image: redis/redis-stack:latest
+    ports:
+      - 16379:6379
+      - 18001:8001
+    volumes:
+      - ./redis_data:/data
+    environment:
+      - REDIS_ARGS="--requirepass redis-stack"
