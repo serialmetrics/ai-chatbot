@@ -2,11 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { existsSync } from 'fs'
 import fs from 'fs/promises'
 import path from 'path'
+import { auth } from '@/auth'
 
 // this is the file upload handler
 // it accepts file and save it inder the STORE_PATH directory
 // STORE_PATH should be defined in .env.local file
 export async function POST(req: NextRequest) {
+    const session = await auth()
+    if (!session) {
+        return NextResponse.json({}, { status: 401 })
+    }
+
     const formData = await req.formData()
     console.log(formData)
 

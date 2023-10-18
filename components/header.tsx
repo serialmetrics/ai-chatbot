@@ -60,7 +60,7 @@ export async function Header() {
             </div>
             <div className="flex items-center justify-end space-x-2">
                 {/* ... (existing buttons) */}
-                <UploadFileButton />
+                {session?.user && <UploadFileButton />}
             </div>
         </header>
     )

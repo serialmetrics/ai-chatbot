@@ -3,12 +3,17 @@ import { existsSync } from 'fs'
 import fs from 'fs/promises'
 import path from 'path'
 import mime from 'mime'
+import { auth } from '@/auth'
 
 // this API endpoint allows to retrieve uploaded files via GET request
 export async function GET(
     req: NextRequest,
     { params }: { params: { name: string } }
 ) {
+    const session = await auth()
+    if (!session) {
+        return NextResponse.json({}, { status: 401 })
+    }
     const filePath = path.join(
         process.cwd(),
         process.env.STORE_PATH!,
