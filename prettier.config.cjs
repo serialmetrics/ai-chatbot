@@ -5,7 +5,7 @@ module.exports = {
   useTabs: false,
   singleQuote: true,
   arrowParens: 'avoid',
-  tabWidth: 2,
+  tabWidth: 4,
   trailingComma: 'none',
   importOrder: [
     '^(react/(.*)$)|^(react$)',
