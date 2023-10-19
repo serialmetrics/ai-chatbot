@@ -53,7 +53,8 @@ export async function Header() {
                         <UserMenu user={session.user} />
                     ) : (
                         <Button variant="link" asChild className="-ml-2">
-                            <Link href="/sign-in?callbackUrl=/">Login</Link>
+                            <Link href="/api/auth/signin?callbackUrl=/">Login</Link>
+                            {/* <Link href="/sign-in?callbackUrl=/">Login</Link> */}
                         </Button>
                     )}
                 </div>
