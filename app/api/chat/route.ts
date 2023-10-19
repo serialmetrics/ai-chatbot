@@ -1,4 +1,5 @@
-import { kv } from '@vercel/kv'
+// import { kv } from '@vercel/kv'
+import kv from 'lib/redis'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { Configuration, OpenAIApi } from 'openai-edge'
 
@@ -56,10 +57,10 @@ export async function POST(req: Request) {
         ]
       }
       await kv.hmset(`chat:${id}`, payload)
-      await kv.zadd(`user:chat:${userId}`, {
+      await kv.zadd(`user:chat:${userId}`, JSON.stringify({
         score: createdAt,
         member: `chat:${id}`
-      })
+      }))
     }
   })
 

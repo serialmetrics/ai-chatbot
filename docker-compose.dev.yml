@@ -1,13 +1,28 @@
+version: "3"
+
 services:
   chat:
-    build: .
-    container_name: chatbot
-    env_file:
-      - .env
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+      args:
+        - DOCKER_PORT=${DOCKER_PORT}
+        - USERNAME=${USER}
+    container_name: chatbot_${USER}
+    environment:
+      - DOCKER_PORT=${DOCKER_PORT}
+      - USERNAME=${USER}
     volumes:
-      - ./upload:/app/upload
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      - /home/${USER}:/home/${USER}
+      - .:/app
+      # - /app/node_modules
     depends_on:
       - redis
+    ports:
+      - 4000:3000
+    user: "${UID}:${GID}"
 
   redis:
     image: redis/redis-stack:latest
