@@ -7,13 +7,14 @@ RUN apk add --no-cache libc6-compat git openssh-client
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+#   if [ -d node_modules ]; then rm -rf node_modules ; fi && \
+#   if [ -d .pnpm-store ]; then rm -rf .pnpm-store ; fi && \
+# COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY package.json yarn.lock* pnpm-lock.yaml* .pnpm-store ./
 RUN \
-  if [ -d node_modules ]; then rm -rf node_modules ; fi \
-  if [ -d .pnpm-store ]; then rm -rf .pnpm-store ; fi \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
   elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
+  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --prefer-offline --frozen-lockfile; \
   else echo "Lockfile not found." && exit 1; \
   fi
 
@@ -43,7 +44,7 @@ WORKDIR /app
 
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
