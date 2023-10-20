@@ -3,15 +3,10 @@
 
 cd /app
 
-ls -al /
-ls -al /app/
-id
-set
-# pnpm i
-# pnpm dev
+[ -d node_modules ] && rm -rf node_modules
+[ -d .pnpm-store ] && rm -rf .pnpm-store
+pnpm i
 
-# npm i
-# npm run dev
-
+echo "Container is running now. You can run the \"pnpm dev\" in attached console"
 # just to keep it running :)
 tail -f /dev/null

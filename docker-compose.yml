@@ -4,11 +4,11 @@ services:
   chat:
     build:
       context: ./
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       args:
         - DOCKER_PORT=${DOCKER_PORT}
         - USERNAME=${USER}
-    container_name: chatbot_${USER}
+    container_name: chatbot_prod_${USER}
     environment:
       - DOCKER_PORT=${DOCKER_PORT}
       - USERNAME=${USER}
