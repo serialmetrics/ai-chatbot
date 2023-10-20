@@ -20,7 +20,7 @@ services:
     depends_on:
       - redis
     ports:
-      - 4000:3000
+      - ${DOCKER_PORT}:3000
     user: "${UID}:${GID}"
 
   redis:
