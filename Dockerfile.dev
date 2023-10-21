@@ -2,7 +2,7 @@ FROM node:18-alpine
 
 ARG USERNAME
 ARG DOCKER_PORT=3000
-ENV UID 501
+ARG UID
 
 # Create a new user inside the container
 RUN adduser --system ${USERNAME} --uid ${UID}

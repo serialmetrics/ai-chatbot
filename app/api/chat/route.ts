@@ -60,6 +60,7 @@ export async function POST(req: Request) {
             await kv.hmset(`chat:${id}`, payload);
             await kv.zadd(
                 `user:chat:${user_email}`,
+                createdAt,
                 JSON.stringify({
                     score: createdAt,
                     member: `chat:${id}`,
