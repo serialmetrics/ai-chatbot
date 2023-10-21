@@ -20,9 +20,9 @@ export default function UploadFileS3Button() {
 
     return (
         <>
-            <label htmlFor="fileInput" className={cn(buttonVariants())}>
-                {!uploading && <IconVercel className="mr-2" />}
-                {uploading && <IconSpinner className="mr-2" />}
+            <label htmlFor="fileInput" className={`cursor-pointer ${cn(buttonVariants())}`}>
+                {!uploading && <IconVercel className="mr-2 cursor-pointer" />}
+                {uploading && <IconSpinner className="mr-2 cursor-pointer" />}
                 <span
                     className="hidden sm:block"
                     onClick={openFileDialog}

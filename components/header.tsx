@@ -17,8 +17,6 @@ import { SidebarFooter } from '@/components/sidebar-footer'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { ClearHistory } from '@/components/clear-history'
 import { UserMenu } from '@/components/user-menu'
-import { LoginButton } from '@/components/login-button'
-import UploadFileButton from './upload-file-button'
 import UploadFileS3Button from './upload-file-s3-button'
 
 export async function Header() {
@@ -55,14 +53,12 @@ export async function Header() {
                     ) : (
                         <Button variant="link" asChild className="-ml-2">
                             <Link href="/api/auth/signin?callbackUrl=/">Login</Link>
-                            {/* <Link href="/sign-in?callbackUrl=/">Login</Link> */}
                         </Button>
                     )}
                 </div>
             </div>
             <div className="flex items-center justify-end space-x-2">
                 {/* ... (existing buttons) */}
-                {/* {session?.user && <UploadFileButton />} */}
                 {session?.user && <UploadFileS3Button />}
             </div>
         </header>

@@ -49,14 +49,14 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
 
   const uid = await kv.hget(`chat:${id}`, 'userId')
 
-  if (uid !== session?.user?.id) {
+  if (uid !== session?.user?.email) {
     return {
       error: 'Unauthorized'
     }
   }
 
   await kv.del(`chat:${id}`)
-  await kv.zrem(`user:chat:${session?.user?.id}`, `chat:${id}`)
+  await kv.zrem(`user:chat:${session?.user?.email}`, `chat:${id}`)
 
   revalidatePath('/')
   return revalidatePath(path)
@@ -65,13 +65,13 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
 export async function clearChats() {
   const session = await auth()
 
-  if (!session?.user?.id) {
+  if (!session?.user?.email) {
     return {
       error: 'Unauthorized'
     }
   }
 
-  const chats: string[] = await kv.zrange(`user:chat:${session.user.id}`, 0, -1)
+  const chats: string[] = await kv.zrange(`user:chat:${session.user.email}`, 0, -1)
   if (!chats.length) {
   return redirect('/')
   }
@@ -79,7 +79,7 @@ export async function clearChats() {
 
   for (const chat of chats) {
     pipeline.del(chat)
-    pipeline.zrem(`user:chat:${session.user.id}`, chat)
+    pipeline.zrem(`user:chat:${session.user.email}`, chat)
   }
 
   await pipeline.exec()
@@ -101,7 +101,7 @@ export async function getSharedChat(id: string) {
 export async function shareChat(chat: Chat) {
   const session = await auth()
 
-  if (!session?.user?.id || session.user.id !== chat.userId) {
+  if (!session?.user?.email || session.user.email !== chat.userId) {
     return {
       error: 'Unauthorized'
     }
