@@ -28,10 +28,7 @@ export async function generateMetadata({ params }: ChatPageProps): Promise<Metad
 }
 
 export default async function ChatPage({ params }: ChatPageProps) {
-    console.log('chat')
-    // const session = await auth();
     const session = await getServerSession()
-    console.log('session:', session)
 
     if (!session?.user) {
         redirect(`/sign-in?next=/chat/${params.id}`);
@@ -43,9 +40,12 @@ export default async function ChatPage({ params }: ChatPageProps) {
         notFound();
     }
 
-    if (chat?.userId !== session?.user?.email) {
+    if (chat?.user_email !== session?.user?.email) {
         notFound();
     }
 
+    if (typeof chat.messages === "string") {
+        chat.messages = JSON.parse(chat.messages)
+    }
     return <Chat id={chat.id} initialMessages={chat.messages} />;
 }

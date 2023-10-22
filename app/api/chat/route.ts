@@ -49,22 +49,19 @@ export async function POST(req: Request) {
                 user_email,
                 createdAt,
                 path,
-                messages: [
+                messages: JSON.stringify([
                     ...messages,
                     {
                         content: completion,
                         role: "assistant",
                     },
-                ],
+                ]),
             };
             await kv.hmset(`chat:${id}`, payload);
             await kv.zadd(
                 `user:chat:${user_email}`,
                 createdAt,
-                JSON.stringify({
-                    score: createdAt,
-                    member: `chat:${id}`,
-                })
+                `chat:${id}`,
             );
         },
     });
