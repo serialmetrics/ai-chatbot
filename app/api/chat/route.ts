@@ -1,46 +1,41 @@
-// import { kv } from '@vercel/kv'
 import kv from "lib/redis";
-import { OpenAIStream, StreamingTextResponse } from "ai";
-import { Configuration, OpenAIApi } from "openai-edge";
 
-// import { auth } from '@/auth'
 import { nanoid } from "@/lib/utils";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
+import { StreamingTextResponse } from "ai";
+import { JustinaCallbacks, JustinaStream } from "@/lib/justina";
+// import { resourceUsage } from "process";
+import { get_title_from_openai } from "@/lib/openai-title";
 
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-});
-
-const openai = new OpenAIApi(configuration);
 
 export async function POST(req: Request) {
-    const json = await req.json();
-    const { messages, previewToken } = json;
+    const { id, messages } = await req.json();
     const session = await getServerSession(authOptions);
     const user_email = session?.user.email;
 
+
     if (!user_email) {
-        return new Response("Unauthorized", {
-            status: 401,
-        });
+        return new Response('Unauthorized', {
+            status: 401
+        })
     }
 
-    if (previewToken) {
-        configuration.apiKey = previewToken;
-    }
-
-    const res = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages,
-        temperature: 0.7,
-        stream: true,
-    });
-
-    const stream = OpenAIStream(res, {
+    const cb: JustinaCallbacks = {
+        onStart: async () => {
+            console.log('Stream started');
+        },
+        onToken: (token: any) => {
+            console.log('Token received', token);
+            if (token.startsWith("json:")) {
+                const parsed = JSON.parse(token.split("json:")[1]);
+                return parsed.choices[0].delta.content;
+            }
+            return token;
+        },
         async onCompletion(completion) {
-            const title = json.messages[0].content.substring(0, 100);
-            const id = json.id ?? nanoid();
+            const title = await get_title_from_openai(messages);
+            const id = nanoid();
             const createdAt = Date.now();
             const path = `/chat/${id}`;
             const payload = {
@@ -64,7 +59,10 @@ export async function POST(req: Request) {
                 `chat:${id}`,
             );
         },
-    });
-
+        onFinal: async (completion: any) => {
+            console.log('Stream ended', completion);
+        },
+    }
+    const stream = await JustinaStream({ id, messages, cb });
     return new StreamingTextResponse(stream);
 }
