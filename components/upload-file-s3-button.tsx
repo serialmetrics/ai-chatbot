@@ -3,10 +3,10 @@
 import { buttonVariants } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { IconSpinner, IconVercel } from "./ui/icons";
-import { useS3Upload } from "@/hooks/use-s3-upload";
 import { useState } from "react";
 import { useLocalStorage } from '@/lib/hooks/use-local-storage'
 import toast from "react-hot-toast";
+import { useS3Upload } from "@/hooks/use-s3-upload";
 
 async function ingestionProgress(
     url: string,
@@ -88,21 +88,9 @@ export default function UploadFileS3Button() {
         console.log('handleFileChange started:', file.name);
         await new Promise(r => setTimeout(r, 3000));
         let { url } = await uploadToS3(file);
-        // const url = "https://newcobucket.s3.us-east-2.amazonaws.com/next-s3-uploads/49d1aab3-2d81-4add-82b0-d59903dca155/1.2.2.2-Customer-Contract---Stockwood-Dr---Woodstock---GA.pdf"
         console.log('handleFileChange ended:', url);
-        // send url to backend and listen for status updates
         ingestionProgress(url, setUploading, setJustinaKey);
-        // setUploading(false)
     };
-
-    const openFileDialogOnce = async () => {
-        if (openDialog) return;
-        setOpenDialog(true);
-        openFileDialog();
-        await new Promise(r => setTimeout(r, 3000));
-        setOpenDialog(false);
-    };
-
 
     return (
         <>
@@ -120,7 +108,11 @@ export default function UploadFileS3Button() {
                     className="sm:hidden"
                 >{uploading ? 'Uploading...' : 'Upload'}</span>
             </label>
-            <FileInput id="fileInput" disabled={uploading} onChange={handleFileChange} />
+            <FileInput
+                id="fileInput"
+                disabled={uploading}
+                onChange={handleFileChange}
+            />
         </>
     );
 }
