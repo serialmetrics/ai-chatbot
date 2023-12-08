@@ -18,6 +18,7 @@ export interface JustinaCallbacks {
 
 interface JustinaChatParams {
     id: string;
+    base_key: string;
     messages: JustinaChatMessage[];
     cb?: JustinaCallbacks;
 }
@@ -39,7 +40,6 @@ export function cleanMessages(messages: JustinaChatMessage[]) {
             try {
                 got_json = JSON.parse(last_part);
             } catch (e) {
-                // console.error('message.content =>', last_part);
                 // console.error(e);
             }
             if (!!got_json && got_json.status === "final") {
@@ -55,12 +55,13 @@ export function cleanMessages(messages: JustinaChatMessage[]) {
 }
 
 
-export async function JustinaStream(
-    { id, messages, cb }: JustinaChatParams
+export async function JustinaChatStream(
+    { id, messages, base_key, cb }: JustinaChatParams
 ): Promise<ReadableStream> {
 
     const baseURL = process.env.JUSTINA_API_URL ?? BASE_URL;
     const chatURL = `${baseURL}/chat/completions`;
+    // const chatURL = `${baseURL}/echo`;
     // const chatURL = `${baseURL}/chat/testcompletions`;
     // const chatURL = `${baseURL}/chat/openaicompletions`;
     const fetchResponse = fetch(
@@ -73,7 +74,8 @@ export async function JustinaStream(
             },
             body: JSON.stringify({
                 id,
-                messages: cleanMessages(messages)
+                messages: cleanMessages(messages),
+                base_key,
             }),
         }
     );
@@ -104,23 +106,7 @@ export async function JustinaStream(
                         if (cb?.onToken) {
                             text = cb.onToken(text);
                         }
-                        console.log('>> decoded:', text);
                         fullText += text;
-                        // console.log('>> decoded:', text);
-                        // if (text.startsWith("json:")) {
-                        //     const json_text = text.split("json:")[1];
-                        //     // controller.enqueue(json_text);
-                        //     // return pump();
-                        //     const json = JSON.parse(json_text);
-                        //     console.log('>> json:', json);
-                        //     const content = json.choices[0].delta.content;
-                        //     if (content) {
-                        //         fullText += content;
-                        //         console.log('>> content:', content);
-                        //         controller.enqueue(content);
-                        //     }
-                        //     return pump();
-                        // }
                         controller.enqueue(text);
                         return pump();
                     });
@@ -130,7 +116,6 @@ export async function JustinaStream(
     })
         // Create a new response out of the stream
         .then((stream) => {
-            console.log('Stream:', stream);
             return new Response(stream);
         })
         .catch((err) => console.error(err));
