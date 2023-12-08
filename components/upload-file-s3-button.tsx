@@ -13,7 +13,7 @@ async function ingestionProgress(
     setUploading: (value: boolean) => void,
     setJustinaKey: (value: string) => void
 ) {
-    const baseURL = process.env.JUSTINA_API_URL ?? 'http://127.0.0.1:8000';
+    const baseURL = process.env.JUSTINA_API_EXTERNAL_URL ?? 'http://127.0.0.1:8000';
     const ingestURL = `${baseURL}/chat/ingest`;
     fetch(ingestURL, {
         method: 'POST',
