@@ -59,7 +59,6 @@ async function ingestionProgress(
                             }
                             toast.loading(`${data.progress}% ${data.status}`, {
                                 id: 'document_upload',
-                                duration: 5000
                             });
                             return pump();
                         });
