@@ -51,6 +51,7 @@ async function ingestionProgress(
                                 return;
                             }
                             let text = td.decode(value, { stream: true });
+                            console.log('>> decoded:', text);
                             const data = JSON.parse(text);
                             if (data.data) {
                                 document_key = data.data.replaceAll('"', '');
