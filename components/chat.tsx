@@ -12,16 +12,17 @@ import { toast } from 'react-hot-toast'
 export interface ChatProps extends React.ComponentProps<'div'> {
     initialMessages?: Message[]
     id?: string
+    username: string
 }
 
-export function Chat({ id, initialMessages, className }: ChatProps) {
+export function Chat({ id, initialMessages, username, className }: ChatProps) {
 
     const doc_key = process.env.JUSTINA_DOC_KEY ?? 'JUSTINA_DOC_KEY';
-    function getDocKey() {
+    function getDocumentKey() {
         if (typeof window === 'undefined') {
             return;
         }
-        const key = window.localStorage.getItem(doc_key);
+        const key = window.localStorage.getItem(doc_key) || '==NODOC==';
         return key;
     };
 
@@ -31,7 +32,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
             id,
             body: {
                 id,
-                base_key: getDocKey(),
+                base_key: getDocumentKey(),
             },
             onResponse(response) {
                 if (response.status === 401) {
@@ -45,7 +46,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
             <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
                 {messages.length ? (
                     <>
-                        <ChatList messages={messages} />
+                        <ChatList messages={messages} username={username} />
                         <ChatScrollAnchor trackVisibility={isLoading} />
                     </>
                 ) : (

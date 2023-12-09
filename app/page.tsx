@@ -1,8 +1,12 @@
 import { nanoid } from '@/lib/utils'
 import { Chat } from '@/components/chat'
+import { auth } from '@/auth';
 
-export default function IndexPage() {
-  const id = nanoid()
+export default async function IndexPage() {
+    const id = nanoid()
 
-  return <Chat id={id} />
+    const session = await auth();
+    const username = session?.user?.name || '';
+
+    return <Chat id={id} username={username} />
 }

@@ -3,20 +3,23 @@
 
 import { Message } from 'ai'
 import remarkGfm from 'remark-gfm'
-import remarkMath from 'remark-math'
+// import remarkMath from 'remark-math'
 
 import { cn } from '@/lib/utils'
 import { CodeBlock } from '@/components/ui/codeblock'
 import { MemoizedReactMarkdown } from '@/components/markdown'
-import { IconOpenAI, IconUser } from '@/components/ui/icons'
+// import { IconUser } from '@/components/ui/icons'
 import { ChatMessageActions } from '@/components/chat-message-actions'
+import MemraIcon from './memra-icon'
+import IconUserName from './username-icon'
 
 
 export interface ChatMessageProps {
     message: Message
+    username: string
 }
 
-export function ChatMessage({ message, ...props }: ChatMessageProps) {
+export function ChatMessage({ message, username, ...props }: ChatMessageProps) {
     const justinaMsg = (message: Message): string => {
         if (message.role === 'assistant' && message.content.lastIndexOf("justina-msg") > -1) {
             let got_json = null;
@@ -50,7 +53,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                         : 'bg-primary text-primary-foreground'
                 )}
             >
-                {message.role === 'user' ? <IconUser /> : <IconOpenAI />}
+                {message.role === 'user' ? <IconUserName username={username} /> : <MemraIcon />}
             </div>
             <div className="flex-1 px-1 ml-4 space-y-2 overflow-hidden">
                 <MemoizedReactMarkdown

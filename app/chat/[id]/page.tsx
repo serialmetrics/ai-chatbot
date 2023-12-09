@@ -47,5 +47,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
     if (typeof chat.messages === "string") {
         chat.messages = JSON.parse(chat.messages)
     }
-    return <Chat id={chat.id} initialMessages={chat.messages} />;
+
+    const username = session?.user?.name || '';
+    return <Chat id={chat.id} initialMessages={chat.messages} username={username} />;
 }

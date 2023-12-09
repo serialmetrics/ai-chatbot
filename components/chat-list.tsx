@@ -5,9 +5,10 @@ import { ChatMessage } from "@/components/chat-message";
 
 export interface ChatList {
     messages: Message[];
+    username: string;
 }
 
-export function ChatList({ messages }: ChatList) {
+export function ChatList({ messages, username }: ChatList) {
     if (!messages.length) {
         return null;
     }
@@ -17,7 +18,7 @@ export function ChatList({ messages }: ChatList) {
             {messages.map((message, index) => {
                 return (
                     <div key={index}>
-                        <ChatMessage message={message} />
+                        <ChatMessage message={message} username={username} />
                         {index < messages.length - 1 && <Separator className="my-4 md:my-8" />}
                     </div>
                 )
