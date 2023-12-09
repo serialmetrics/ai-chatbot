@@ -4,7 +4,7 @@ import { useChat, type Message } from 'ai/react'
 
 import { cn } from '@/lib/utils'
 import { ChatList } from '@/components/chat-list'
-import { ChatPanel } from '@/components/chat-panel'
+import { ChatPanel, ChatPanel1 } from '@/components/chat-panel'
 import { EmptyScreen } from '@/components/empty-screen'
 import { ChatScrollAnchor } from '@/components/chat-scroll-anchor'
 import { toast } from 'react-hot-toast'
@@ -53,7 +53,7 @@ export function Chat({ id, initialMessages, username, className }: ChatProps) {
                     <EmptyScreen setInput={setInput} />
                 )}
             </div>
-            <ChatPanel
+            <ChatPanel1
                 id={id}
                 isLoading={isLoading}
                 stop={stop}

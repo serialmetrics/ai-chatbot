@@ -60,10 +60,10 @@ export async function JustinaChatStream(
 ): Promise<ReadableStream> {
 
     const baseURL = process.env.JUSTINA_API_URL ?? BASE_URL;
-    const chatURL = `${baseURL}/chat/completions`;
+    // const chatURL = `${baseURL}/chat/completions`;
     // const chatURL = `${baseURL}/echo`;
     // const chatURL = `${baseURL}/chat/testcompletions`;
-    // const chatURL = `${baseURL}/chat/openaicompletions`;
+    const chatURL = `${baseURL}/chat/openaicompletions`;
     const fetchResponse = fetch(
         chatURL,
         {
