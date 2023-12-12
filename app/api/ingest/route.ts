@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     // console.log('last_upload_action:', last_upload_action, typeof last_upload_action);
 
     if (!last_upload_action) {
-        const baseURL = process.env.NEXT_PUBLIC_JUSTINA_API_URL ?? 'http://127.0.0.1:8000';
+        const baseURL = process.env.JUSTINA_API_URL ?? 'http://127.0.0.1:8000';
         const ingestURL = `${baseURL}/chat/ingest`;
         console.log('body:', body);
         const ingest_data = await fetch(
