@@ -116,7 +116,7 @@ let makeRouteHandler = (options: Options = {}): Handler => {
                 });
 
                 let token = await sts.send(command);
-                console.log('Upload token:', token)
+                // console.log('Upload token:', token)
 
                 res = NextResponse.json({
                     token,

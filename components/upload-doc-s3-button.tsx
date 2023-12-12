@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { UploadCloudIcon } from "lucide-react";
 import useSWR from "swr";
 import toast from "react-hot-toast";
-import { digestMessage } from "@/lib/utils";
+import { MD5, digestMessage } from "@/lib/utils";
 
 
 export default function UploadDocS3Button() {
@@ -19,7 +19,8 @@ export default function UploadDocS3Button() {
         if (!payload.url) {
             return {} as JSON;
         }
-        const upload_key = await digestMessage(payload.url, 'upload:');
+        // const upload_key = await digestMessage(payload.url, 'upload:');
+        const upload_key = 'upload:' + MD5(payload.url);
         const post_data = {
             url: payload.url,
             upload_key
