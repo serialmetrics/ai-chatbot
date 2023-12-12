@@ -19,14 +19,15 @@ export default function UploadDocS3Button() {
         if (!payload.url) {
             return {} as JSON;
         }
+        const upload_key = await digestMessage(payload.url, 'upload:');
+        const post_data = {
+            url: payload.url,
+            upload_key
+        };
         console.log('fetcher payload:', payload);
         const res = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({
-                url: payload.url,
-                upload_key: await digestMessage(payload.url, 'upload:'),
-
-            })
+            body: JSON.stringify(post_data)
         });
         if (!res.ok) {
             const json = await res.json()

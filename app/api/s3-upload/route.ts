@@ -104,11 +104,11 @@ let makeRouteHandler = (options: Options = {}): Handler => {
                         },
                     ],
                 };
-                console.log('Resource:', `arn:aws:s3:::${bucket}/${key}`)
+                // console.log('Resource:', `arn:aws:s3:::${bucket}/${key}`)
 
                 let sts = new STSClient(stsConfig);
 
-                console.log('S3UploadWebToken:', policy)
+                // console.log('S3UploadWebToken:', policy)
                 let command = new GetFederationTokenCommand({
                     Name: "S3UploadWebToken",
                     Policy: JSON.stringify(policy),
