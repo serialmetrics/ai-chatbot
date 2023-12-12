@@ -15,6 +15,7 @@ export default function UploadDocS3Button() {
     async function fetcher<JSON = any>(
         [url, payload]: [string, any],
     ): Promise<JSON> {
+        console.log('fetcher started:', url, payload);
         if (!payload.url) {
             return {} as JSON;
         }
