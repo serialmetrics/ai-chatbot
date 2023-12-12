@@ -1,9 +1,9 @@
-import * as React from 'react'
+// import * as React from 'react'
 import Link from 'next/link'
 
 import { auth } from '@/auth'
 import { clearChats } from '@/app/actions'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { Sidebar } from '@/components/sidebar'
 import { SidebarList } from '@/components/sidebar-list'
 import {
@@ -14,7 +14,8 @@ import { SidebarFooter } from '@/components/sidebar-footer'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { ClearHistory } from '@/components/clear-history'
 import { UserMenu } from '@/components/user-menu'
-import UploadFileS3Button from './upload-file-s3-button'
+import DocumentSelector from './document-selector'
+import React from 'react'
 
 export async function Header() {
     const session = await auth()
@@ -55,8 +56,7 @@ export async function Header() {
                 </div>
             </div>
             <div className="flex items-center justify-end space-x-2">
-                {/* ... (existing buttons) */}
-                {session?.user && <UploadFileS3Button />}
+                <DocumentSelector />
             </div>
         </header>
     )

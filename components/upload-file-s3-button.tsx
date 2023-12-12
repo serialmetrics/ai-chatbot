@@ -1,12 +1,13 @@
 "use client"
 
-import { buttonVariants } from "./ui/button";
-import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from "./ui/button";
+// import { cn } from "@/lib/utils";
 import { IconSpinner, IconVercel } from "./ui/icons";
 import { useState } from "react";
 import { useLocalStorage } from '@/lib/hooks/use-local-storage'
 import toast from "react-hot-toast";
 import { useS3Upload } from "@/hooks/use-s3-upload";
+import { UploadCloudIcon } from "lucide-react";
 
 async function ingestionProgress(
     url: string,
@@ -31,7 +32,7 @@ async function ingestionProgress(
                     let document_key = '';
                     toast.dismiss();
                     return pump();
-                    function pump():any {
+                    function pump(): any {
                         return reader.read().then(({ done, value }) => {
                             // When no more data needs to be consumed, close the stream
                             if (done) {
@@ -59,6 +60,7 @@ async function ingestionProgress(
                             }
                             toast.loading(`${data.progress}% ${data.status}`, {
                                 id: 'document_upload',
+                                duration: 500000
                             });
                             return pump();
                         });
@@ -74,7 +76,7 @@ async function ingestionProgress(
 
 export default function UploadFileS3Button() {
 
-    const [openDialog, setOpenDialog] = useState(false);
+    // const [openDialog, setOpenDialog] = useState(false);
     const [uploading, setUploading] = useState(false);
 
     let { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
@@ -93,25 +95,42 @@ export default function UploadFileS3Button() {
 
     return (
         <>
-            <label
+            <Button
+                variant="outline"
+                size="icon"
                 onClick={openFileDialog}
-                htmlFor="fileInput"
-                className={`cursor-pointer ${cn(buttonVariants())}`}
             >
-                {!uploading && <IconVercel className="mr-2 cursor-pointer" />}
-                {uploading && <IconSpinner className="mr-2 cursor-pointer" />}
-                <span
-                    className="hidden sm:block"
-                >{uploading ? 'Uploading...' : 'Upload Documents'}</span>
-                <span
-                    className="sm:hidden"
-                >{uploading ? 'Uploading...' : 'Upload'}</span>
-            </label>
+                {!uploading && <UploadCloudIcon />}
+                {uploading && <IconSpinner />}
+            </Button>
             <FileInput
                 id="fileInput"
                 disabled={uploading}
                 onChange={handleFileChange}
             />
         </>
-    );
+    )
+    // return (
+    //     <>
+    //         <label
+    //             onClick={openFileDialog}
+    //             htmlFor="fileInput"
+    //             className={`cursor-pointer ${cn(buttonVariants())}`}
+    //         >
+    //             {!uploading && <IconVercel className="mr-2 cursor-pointer" />}
+    //             {uploading && <IconSpinner className="mr-2 cursor-pointer" />}
+    //             <span
+    //                 className="hidden sm:block"
+    //             >{uploading ? 'Uploading...' : 'Upload Documents'}</span>
+    //             <span
+    //                 className="sm:hidden"
+    //             >{uploading ? 'Uploading...' : 'Upload'}</span>
+    //         </label>
+    //         <FileInput
+    //             id="fileInput"
+    //             disabled={uploading}
+    //             onChange={handleFileChange}
+    //         />
+    //     </>
+    // );
 }

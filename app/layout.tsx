@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 
 import { Toaster } from "react-hot-toast";
 
@@ -12,21 +12,25 @@ import { getServerSession } from "next-auth";
 import SessionProvider from "@/components/session-provider";
 
 export const metadata: Metadata = {
+    metadataBase: new URL(process.env.APP_ROOT_URL || "http://localhost:3000"),
     title: {
-        default: "Next.js AI Chatbot",
-        template: `%s - Next.js AI Chatbot`,
+        default: "Memra Chatbot",
+        template: `%s - Memra Chatbot`,
     },
-    description: "An AI-powered chatbot template built with Next.js and Vercel.",
-    themeColor: [
-        { media: "(prefers-color-scheme: light)", color: "white" },
-        { media: "(prefers-color-scheme: dark)", color: "black" },
-    ],
+    description: "An AI-powered chatbot from Memra.",
     icons: {
         icon: "/favicon.ico",
         shortcut: "/favicon-16x16.png",
         apple: "/apple-touch-icon.png",
     },
 };
+
+export const viewport: Viewport = {
+    themeColor: [
+        { media: "(prefers-color-scheme: light)", color: "white" },
+        { media: "(prefers-color-scheme: dark)", color: "black" },
+    ]
+}
 
 interface RootLayoutProps {
     children: React.ReactNode;

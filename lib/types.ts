@@ -16,3 +16,14 @@ export type ServerActionResult<Result> = Promise<
       error: string
     }
 >
+
+
+export interface DocumentInfo extends Record<string, any> {
+    pdf_key: string
+    vdb_key: string
+    kg_key: string
+    index_name: string
+    pages_key: string
+    doc_title: string
+    file_name: string
+}

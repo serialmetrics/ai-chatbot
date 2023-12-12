@@ -2,9 +2,9 @@
 
 import { useChat, type Message } from 'ai/react'
 
-import { cn } from '@/lib/utils'
+import { cn, fetcher } from '@/lib/utils'
 import { ChatList } from '@/components/chat-list'
-import { ChatPanel, ChatPanel1 } from '@/components/chat-panel'
+import { ChatPanel1 } from '@/components/chat-panel'
 import { EmptyScreen } from '@/components/empty-screen'
 import { ChatScrollAnchor } from '@/components/chat-scroll-anchor'
 import { toast } from 'react-hot-toast'
@@ -40,7 +40,7 @@ export function Chat({ id, initialMessages, username, className }: ChatProps) {
                 }
             },
         });
-        
+
     return (
         <>
             <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>

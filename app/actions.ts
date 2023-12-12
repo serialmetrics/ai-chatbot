@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import kv from "lib/redis";
 
 import { auth } from "@/auth";
-import { type Chat } from "@/lib/types";
+import { type DocumentInfo, type Chat } from "@/lib/types";
 
 export async function getChats(userId?: string | null) {
     if (!userId) {
@@ -119,4 +119,30 @@ export async function shareChat(chat: Chat) {
     await kv.hmset(`chat:${chat.id}`, payload);
 
     return payload;
+}
+
+
+export async function getAllDocs() {
+    // JSON is not supported by this Redis library!!!
+    try {
+        // get record with all keys
+        const docs: string[] = await kv.zrange('memra-documents', 0, -1);
+
+        let doc_list: DocumentInfo[] = []
+        // get all values for each key
+        for (const doc of docs) {
+            const key = `${doc}:all_keys`;
+            // raw call to redis
+            const doc_json = await kv.call('JSON.GET', key);
+
+            if (doc_json) {
+                const doc_parsed = JSON.parse(doc_json as string) as DocumentInfo;
+                doc_list.push(doc_parsed);
+            }
+        }
+
+        return doc_list;
+    } catch (error) {
+        return [];
+    }
 }

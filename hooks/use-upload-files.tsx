@@ -18,7 +18,7 @@ export const useUploadFiles = () => {
     let openFileDialog = () => {
         if (ref.current) {
             ref.current.value = '';
-            // ref.current?.click();
+            ref.current?.click();
         }
     };
 

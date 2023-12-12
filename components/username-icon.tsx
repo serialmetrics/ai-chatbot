@@ -6,7 +6,6 @@ interface Props {
 }
 
 const IconUserName = ({ username }: Props ) => {
-    console.log('icon -->',username);
     if (!username) {
         return <IconUser />
     }
