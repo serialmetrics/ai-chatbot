@@ -19,6 +19,7 @@ export default function UploadDocS3Button() {
         if (!payload.url) {
             return {} as JSON;
         }
+        console.log('fetcher payload:', payload);
         const res = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({
