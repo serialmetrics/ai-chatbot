@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
                 }
             }
         );
-        // console.log('ingestion API responded:', ingest_data);
+        console.log('ingestion API responded:', ingest_data);
     }
     // await new Promise(r => setTimeout(r, 2000));
 
