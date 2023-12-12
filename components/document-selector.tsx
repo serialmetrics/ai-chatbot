@@ -23,7 +23,8 @@ export function DocumentSelector() {
     const doc_key = process.env.JUSTINA_DOC_KEY ?? 'JUSTINA_DOC_KEY';
     const [currentDocument, setCurrentDocument] = useLocalStorage<string>(doc_key, "==NODOC==");
 
-    const { data: documents, error } = useSWR<DocumentInfo[]>('/api/documents', fetcher)
+    const { data: documents, error } = useSWR<DocumentInfo[]>(
+        '/api/documents', fetcher, { refreshInterval: 5000 });
     const no_docs: DocumentInfo[] = [];
 
     return (
