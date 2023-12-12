@@ -15,14 +15,12 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const upload_key = body.upload_key;
     const last_upload_action = await getUploadActions(upload_key);
-    console.log('last_upload_action:', last_upload_action, typeof last_upload_action);
+    // console.log('last_upload_action:', last_upload_action, typeof last_upload_action);
 
     if (!last_upload_action) {
         const baseURL = process.env.JUSTINA_API_URL ?? 'http://127.0.0.1:8000';
         const ingestURL = `${baseURL}/chat/ingest`;
 
-        console.log('url:', ingestURL);
-        console.log('body:', body);
         const ingest_data = await fetch(
             ingestURL,
             {

@@ -15,17 +15,13 @@ export default function UploadDocS3Button() {
     async function fetcher<JSON = any>(
         [url, payload]: [string, any],
     ): Promise<JSON> {
-        console.log('fetcher started:', url, payload);
         if (!payload.url) {
             return {} as JSON;
         }
-        // const upload_key = await digestMessage(payload.url, 'upload:');
-        const upload_key = 'upload:' + MD5(payload.url);
         const post_data = {
             url: payload.url,
-            upload_key
+            upload_key: 'upload:' + MD5(payload.url)
         };
-        console.log('fetcher payload:', payload);
         const res = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(post_data)
@@ -82,14 +78,13 @@ export default function UploadDocS3Button() {
 
     let handleFileChange = async (file: File) => {
         setUploading(true);
-        console.log('handleFileChange started:', file.name);
+        // console.log('handleFileChange started:', file.name);
         toast.loading('Uploading document...', {
             id: 'document_upload',
             duration: 100000
         });
-        // await new Promise(r => setTimeout(r, 3000));
         const { url } = await uploadToS3(file);
-        console.log('handleFileChange ended:', url);
+        // console.log('fle uploaded to:', url);
         setMemraKey(url);
     };
 
