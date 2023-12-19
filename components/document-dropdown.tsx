@@ -20,7 +20,7 @@ export const DocumentDropdown = ({
     
     const shortTitle = (title: string) => {
         if (title.length > 30) {
-            return title.slice(0, 30) + '...'
+            return title.slice(0, 60) + '...'
         }
         return title
     }
@@ -30,11 +30,11 @@ export const DocumentDropdown = ({
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">
                     <div
-                        className="relative max-h-5flex-1 select-none overflow-hidden text-ellipsis break-all"
-                        title={currentDocument?.doc_title}
+                        className="relative max-h-5 flex-1 select-none overflow-hidden text-ellipsis break-all"
+                        title={currentDocument?.file_name}
                     >
                         <span className="whitespace-nowrap">
-                            {shortTitle(currentDocument?.doc_title || 'Select document')}
+                            {shortTitle(currentDocument?.file_name || 'Select document')}
                         </span>
                     </div>
                 </Button>
@@ -49,7 +49,7 @@ export const DocumentDropdown = ({
                             onClick={() => setDocument(doc.pdf_key.split(':')[0])}
                         >
                             <FileSearch className="mr-2 h-4 w-4" />
-                            <span>{doc.doc_title}</span>
+                            <div>{doc.file_name}</div>
                         </DropdownMenuItem>
                     ))}
                 </DropdownMenuGroup>
