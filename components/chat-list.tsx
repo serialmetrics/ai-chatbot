@@ -2,6 +2,7 @@ import { type Message } from "ai";
 
 import { Separator } from "@/components/ui/separator";
 import { ChatMessage } from "@/components/chat-message";
+import { ChatMessageMemra } from "./chat-message-memra";
 
 export interface ChatList {
     messages: Message[];
@@ -18,7 +19,8 @@ export function ChatList({ messages, username }: ChatList) {
             {messages.map((message, index) => {
                 return (
                     <div key={index}>
-                        <ChatMessage message={message} username={username} />
+                        {/* <ChatMessage message={message} username={username} /> */}
+                        <ChatMessageMemra message={message} username={username} />
                         {index < messages.length - 1 && <Separator className="my-4 md:my-8" />}
                     </div>
                 )

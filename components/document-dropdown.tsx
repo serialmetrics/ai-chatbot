@@ -3,19 +3,20 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { Button } from './ui/button'
 import { FileSearch, XSquareIcon } from 'lucide-react'
 import { DocumentInfo } from '@/lib/types'
+import { useLocalStorage } from '@/lib/hooks/use-local-storage'
 
 interface DocumentDropdownProps {
     documents: DocumentInfo[] | undefined
-    document: string
-    setDocument: (key: string) => void
+    curDocument: string
+    setDocument: (doc: string) => void
 }
 
 export const DocumentDropdown = ({
-    documents, document, setDocument
+    documents, curDocument, setDocument
 }: DocumentDropdownProps) => {
-
-    const currentDocument = documents && documents.find(
-        doc => doc.pdf_key === `${document}:pdf_file`
+    
+    const current_document = documents && documents.find(
+        doc => doc.pdf_key === `${curDocument}:pdf_file`
     );
     
     const shortTitle = (title: string) => {
@@ -31,16 +32,16 @@ export const DocumentDropdown = ({
                 <Button variant="outline">
                     <div
                         className="relative max-h-5 flex-1 select-none overflow-hidden text-ellipsis break-all"
-                        title={currentDocument?.file_name}
+                        title={current_document?.file_name}
                     >
                         <span className="whitespace-nowrap">
-                            {shortTitle(currentDocument?.file_name || 'Select document')}
+                            {shortTitle(current_document?.file_name || 'Ask across all documents')}
                         </span>
                     </div>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-100">
-                <DropdownMenuLabel>Documents</DropdownMenuLabel>
+                <DropdownMenuLabel>Select a document to focus your requests</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     {documents && documents.map((doc) => (
@@ -58,7 +59,7 @@ export const DocumentDropdown = ({
                     onClick={() => setDocument('==NODOC==')}
                 >
                     <XSquareIcon className="mr-2 h-4 w-4" />
-                    <span>Reset document</span>
+                    <span>Ask across all documents</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

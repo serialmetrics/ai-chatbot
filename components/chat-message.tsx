@@ -19,6 +19,27 @@ export interface ChatMessageProps {
     username: string
 }
 
+interface SearchData {
+    document_id: string
+    document_title: string
+    filename: string
+    content: string
+    citation: string
+}
+
+function format_search_data(search_data: SearchData[] | null) {
+    if (!search_data) return "No search results";
+    if (search_data.length === 0) return "No search results";
+    let output = "";
+    for (const search_result of search_data) {
+        const { document_id, document_title, filename, content } = search_result;
+        output += `[**${document_title}**](${document_id})\n\n*${filename.split('/').pop()}*\n\n${content}\n\n\n`;
+    }
+    return output;
+}
+
+
+
 export function ChatMessage({ message, username, ...props }: ChatMessageProps) {
     const justinaMsg = (message: Message): string => {
         if (message.role === 'assistant' && message.content.lastIndexOf("justina-msg") > -1) {
@@ -32,7 +53,11 @@ export function ChatMessage({ message, username, ...props }: ChatMessageProps) {
             }
             if (!!got_json) {
                 if (got_json.status === "final") {
-                    const { answer, source_info } = got_json.data;
+                    console.log(got_json);
+                    const { answer, source_info, search_data } = got_json.data;
+                    if (search_data) {
+                        return `${answer}\n\n${format_search_data(search_data)}`;
+                    }
                     return `${answer}\n\n${source_info || ''}`;
                 }
                 if (got_json.status === "progress") return `*${got_json.data}*`;

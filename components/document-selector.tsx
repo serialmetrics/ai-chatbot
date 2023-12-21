@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { IconPlus } from './ui/icons'
 import { DocumentDropdown } from './document-dropdown'
@@ -12,6 +12,7 @@ import UploadFileS3Button from './upload-file-s3-button';
 import { fetcher } from '@/lib/utils';
 import { DocumentInfo } from '@/lib/types';
 import UploadDocS3Button from './upload-doc-s3-button';
+import { useLocalStorageWatcher } from '@/hooks/use-localstorage-watcher';
 
 interface FetcherType {
     url: string;
@@ -21,17 +22,35 @@ interface FetcherType {
 export function DocumentSelector() {
 
     const doc_key = process.env.JUSTINA_DOC_KEY ?? 'JUSTINA_DOC_KEY';
-    const [currentDocument, setCurrentDocument] = useLocalStorage<string>(doc_key, "==NODOC==");
+    // const [currentDocument, setCurrentDocument] = useLocalStorage<string>(doc_key, "==NODOC==");
+    const [currentDocument, setCurrentDocument] = useLocalStorageWatcher(doc_key, "==NODOC==");
+
+    useEffect(() => {
+        const handleStorageChange = () => {
+            window.removeEventListener('localStorageChange', handleStorageChange);
+            setCurrentDocument(JSON.parse(localStorage.getItem(doc_key) || '') || '==NODOC==');
+            window.addEventListener('localStorageChange', handleStorageChange);
+        };
+
+        window.addEventListener('localStorageChange', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('localStorageChange', handleStorageChange);
+        };
+    }, []);
 
     const { data: documents, error } = useSWR<DocumentInfo[]>(
-        '/api/documents', fetcher, { refreshInterval: 5000 });
+        '/api/documents',
+        fetcher,
+        { refreshInterval: 5000 }
+    );
     const no_docs: DocumentInfo[] = [];
 
     return (
         <>
             <DocumentDropdown
                 documents={documents}
-                document={currentDocument || '==NODOC=='}
+                curDocument={currentDocument || '==NODOC=='}
                 setDocument={setCurrentDocument}
             />
             <UploadDocS3Button />
