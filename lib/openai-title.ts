@@ -25,7 +25,7 @@ export async function get_title_from_openai(messages: JustinaChatMessage[]) {
 
     // Ask OpenAI for a streaming completion given the prompt
     const response = await openai.completions.create({
-        model: 'text-davinci-003',
+        model: 'gpt-3.5-turbo-instruct', // 'text-davinci-003',
         temperature: 0.6,
         max_tokens: 300,
         prompt: `Create a short title for the following conversation.
