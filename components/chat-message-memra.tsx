@@ -119,7 +119,7 @@ const SearchResultsMessage = ({ search_results, ...props }: SearchResultsMessage
             <Markdown mdtext={answer} {...props} />
             <div>Found {search_data.length} {search_data.length === 1 ? 'source' : 'sources'}</div>
             {search_data.map((search_result, index) => {
-                const { document_id, document_title, filename, content } = search_result;
+                const { document_id, document_title, filename, citation } = search_result;
                 return (
                     <div key={index}>
                         <SetCurrentDocumentLink
@@ -129,7 +129,7 @@ const SearchResultsMessage = ({ search_results, ...props }: SearchResultsMessage
                         <br />
                         <div className='text-gray-500 text-xs italic'>{filename.split('/').pop()}</div>
                         <div className="mb-8">
-                            <Markdown mdtext={content} {...props} />
+                            <Markdown mdtext={citation} {...props} />
                         </div>
                     </div>
                 )
