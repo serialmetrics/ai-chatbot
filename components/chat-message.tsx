@@ -88,7 +88,8 @@ export function ChatMessage({ message, username, ...props }: ChatMessageProps) {
                         p({ children }) {
                             return <p className="mb-2 last:mb-0">{children}</p>
                         },
-                        code({ node, inline, className, children, ...props }) {
+                        // code({ node, inline, className, children, ...props }) {
+                        code({ node, className, children, ...props }) {
                             // if (children.length) {
                             //     if (children[0] == '▍') {
                             //         return (
@@ -101,13 +102,13 @@ export function ChatMessage({ message, username, ...props }: ChatMessageProps) {
 
                             const match = /language-(\w+)/.exec(className || '')
 
-                            if (inline) {
-                                return (
-                                    <code className={className} {...props}>
-                                        {children}
-                                    </code>
-                                )
-                            }
+                            // if (inline) {
+                            //     return (
+                            //         <code className={className} {...props}>
+                            //             {children}
+                            //         </code>
+                            //     )
+                            // }
 
                             return (
                                 <CodeBlock
