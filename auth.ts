@@ -30,6 +30,12 @@ const users = [
         name: "Amir Behbehani",
         password: "TeslaStocksHit1k$,andGo2Sky",
     },
+    {
+        id: "4",
+        email: "matt@memra.co",
+        name: "Matt Marino",
+        password: "Khat59Adonis36Garth67Homily20Sybows",
+    },
 ];
 
 export const authOptions = {
