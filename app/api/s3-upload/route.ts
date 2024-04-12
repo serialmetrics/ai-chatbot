@@ -35,11 +35,13 @@ let makeRouteHandler = (options: Options = {}): Handler => {
 
         const session = await auth()
         if (!session) {
+            console.log('Not authenticated')
             res = NextResponse.json({}, { status: 401 })
         }
 
         let missing = missingEnvs(config);
         if (missing.length > 0) {
+            console.log(`Next S3 Upload: Missing ENVs ${missing.join(", ")}`)
             res = NextResponse.json({
                 error: `Next S3 Upload: Missing ENVs ${missing.join(", ")}`
             }, { status: 500 })
@@ -49,6 +51,7 @@ let makeRouteHandler = (options: Options = {}): Handler => {
         let filename = req_json.filename;
 
         if (!filename) {
+            console.log("Filename is empty!")
             res = NextResponse.json({
                 error: "Filename is empty!"
             }, { status: 500 });
@@ -86,6 +89,7 @@ let makeRouteHandler = (options: Options = {}): Handler => {
             }, { status: 200 })
             return;
         } else {
+            console.log('uploadType:', uploadType)
             let stsConfig: STSClientConfig = {
                 credentials: {
                     accessKeyId: config.accessKeyId,
@@ -104,11 +108,11 @@ let makeRouteHandler = (options: Options = {}): Handler => {
                     },
                 ],
             };
-            // console.log('Resource:', `arn:aws:s3:::${bucket}/${key}`)
+            console.log('Resource:', `arn:aws:s3:::${bucket}/${key}`)
 
             let sts = new STSClient(stsConfig);
 
-            // console.log('S3UploadWebToken:', policy)
+            console.log('S3UploadWebToken:', policy)
             let command = new GetFederationTokenCommand({
                 Name: "S3UploadWebToken",
                 Policy: JSON.stringify(policy),
@@ -116,7 +120,7 @@ let makeRouteHandler = (options: Options = {}): Handler => {
             });
 
             let token = await sts.send(command);
-            // console.log('Upload token:', token)
+            console.log('Upload token:', token)
 
             res = NextResponse.json({
                 token,
