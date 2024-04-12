@@ -124,13 +124,15 @@ let makeRouteHandler = (options: Options = {}): Handler => {
 
             let token = await sts.send(command);
             console.log('Upload token:', token);
-
-            res = NextResponse.json({
+            const return_data = {
                 token,
                 key,
                 bucket,
                 region,
-            }, { status: 200 });
+            };
+            console.log('return_data:', return_data);
+
+            res = NextResponse.json(return_data, { status: 200 });
             return;
         }
     };
